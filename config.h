@@ -1,11 +1,11 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx = 1; /* border pixel of windows */
+static unsigned int borderpx = 1;       /* border pixel of windows */
 static const unsigned int gappx = 6;    /*gaps between windows */
-static const unsigned int snap = 32;    /* snap pixel */
-static const int showbar = 1;           /* 0 means no bar */
-static const int topbar = 1;            /* 0 means bottom bar */
+static unsigned int snap = 32;          /* snap pixel */
+static int showbar = 1;                 /* 0 means no bar */
+static int topbar = 1;                  /* 0 means bottom bar */
 static const int showsystray = 1;       /* 0 means no systray */
 static const int systrayonleft = 0;     /* 0 means right, >0 means left */
 static const int systrayspacing = 2;    /* systray spacing */
@@ -13,8 +13,8 @@ static const int systraypinning = 0;    /* 0 means follow selected monitor */
 static const int systraypinningfailfirst =
     1; /* 1: pin systray to first monitor on fail */
 static const int user_bh = 0;
-static const char *fonts[] = {"JetBrainsMono Nerd Font:size=14",
-                              "monospace:size=12"};
+static char font[] = "JetBrainsMono Nerd Font:size=14";
+static const char *fonts[] = {font, "monospace:size=12"};
 static char dmenufont[] = "monospace:size=12";
 static char normbgcolor[] = "#282828";
 static char normbordercolor[] = "#504945";
@@ -51,10 +51,10 @@ static const Rule rules[] = {
 };
 
 /* layout(s) */
-static const float mfact = 0.55; /* factor of master area size [0.05..0.95] */
-static const int nmaster = 1;    /* number of clients in master area */
-static const int resizehints =
-    1; /* 1 means respect size hints in tiled resizals */
+static float mfact = 0.55;  /* factor of master area size [0.05..0.95] */
+static int nmaster = 1;     /* number of clients in master area */
+static int resizehints = 1; /* 1 means respect size hints in tiled resizals */
+
 static const int lockfullscreen =
     1; /* 1 will force focus on the fullscreen window */
 static const int refreshrate =
@@ -84,14 +84,34 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] =
     "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = {"dmenu_run", "-m",  dmenumon,    "-fn",
-                                 dmenufont,   "-nb", normbgcolor, "-nf",
-                                 normfgcolor, "-sb", selbgcolor,  "-sf",
+static const char *dmenucmd[] = {"dmenu_run", "-m",  dmenumon,       "-fn",
+                                 dmenufont,   "-nb", normbgcolor,    "-nf",
+                                 normfgcolor, "-sb", selbordercolor, "-sf",
                                  selfgcolor,  NULL};
 static const char *termcmd[] = {"st", NULL};
 static const char *brightup[] = {"brightnessctl", "set", "+10%", NULL};
 static const char *brightdown[] = {"brightnessctl", "set", "10%-", NULL};
 
+/*
+ * Xresources preferences to load at startup
+ */
+ResourcePref resources[] = {
+    {"font", STRING, &font},
+    {"dmenufont", STRING, &dmenufont},
+    {"normbgcolor", STRING, &normbgcolor},
+    {"normbordercolor", STRING, &normbordercolor},
+    {"normfgcolor", STRING, &normfgcolor},
+    {"selbgcolor", STRING, &selbgcolor},
+    {"selbordercolor", STRING, &selbordercolor},
+    {"selfgcolor", STRING, &selfgcolor},
+    {"borderpx", INTEGER, &borderpx},
+    {"snap", INTEGER, &snap},
+    {"showbar", INTEGER, &showbar},
+    {"topbar", INTEGER, &topbar},
+    {"nmaster", INTEGER, &nmaster},
+    {"resizehints", INTEGER, &resizehints},
+    {"mfact", FLOAT, &mfact},
+};
 static const Key keys[] = {
     /* modifier                     key        function        argument */
     {ShiftMask, XK_space, spawn, {.v = dmenucmd}},
@@ -122,6 +142,8 @@ static const Key keys[] = {
     {0, XF86XK_AudioRaiseVolume, spawn, {.v = upvol}},
     {0, XF86XK_AudioLowerVolume, spawn, {.v = downvol}},
     {0, XF86XK_AudioMute, spawn, {.v = mutevol}},
+    {MODKEY | ShiftMask, XK_p, spawn,
+     SHCMD("$HOME/Tpac/scripts/screen_capture.sh")},
 
     TAGKEYS(XK_1, 0) TAGKEYS(XK_2, 1) TAGKEYS(XK_3, 2) TAGKEYS(XK_4, 3)
         TAGKEYS(XK_5, 4) TAGKEYS(XK_6, 5) TAGKEYS(XK_7, 6) TAGKEYS(XK_8, 7)
@@ -132,7 +154,7 @@ static const Key keys[] = {
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle,
  * ClkClientWin, or ClkRootWin */
 static const Button buttons[] = {
-    /* click                event mask      button          function argument */
+    /* click                event mask     button          function argument */
     {ClkLtSymbol, 0, Button1, setlayout, {0}},
     {ClkLtSymbol, 0, Button3, setlayout, {.v = &layouts[2]}},
     {ClkWinTitle, 0, Button2, zoom, {0}},
