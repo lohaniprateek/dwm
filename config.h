@@ -1,25 +1,29 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static unsigned int borderpx = 1;       /* border pixel of windows */
-static const unsigned int gappih = 6;   /* horizontal inner gap between windows */
-static const unsigned int gappiv = 6;   /* vertical inner gap between windows */
-static const unsigned int gappoh = 6;   /* horizontal outer gap between windows and screen edge */
-static const unsigned int gappov = 6;   /* vertical outer gap between windows and screen edge */
-static int smartgaps = 0;               /* 1 means no outer gap with one window */
-static unsigned int snap = 32;          /* snap pixel */
-static int showbar = 1;                 /* 0 means no bar */
-static int topbar = 1;                  /* 0 means bottom bar */
-static const int showsystray = 1;       /* 0 means no systray */
-static const int systrayonleft = 0;     /* 0 means right, >0 means left */
-static const int systrayspacing = 2;    /* systray spacing */
-static const int systraypinning = 0;    /* 0 means follow selected monitor */
+static unsigned int borderpx = 1;     /* border pixel of windows */
+static const unsigned int gappih = 6; /* horizontal inner gap between windows */
+static const unsigned int gappiv = 6; /* vertical inner gap between windows */
+static const unsigned int gappoh =
+    6; /* horizontal outer gap between windows and screen edge */
+static const unsigned int gappov =
+    6; /* vertical outer gap between windows and screen edge */
+static int smartgaps = 0;            /* 1 means no outer gap with one window */
+static unsigned int snap = 32;       /* snap pixel */
+static int showbar = 1;              /* 0 means no bar */
+static int topbar = 1;               /* 0 means bottom bar */
+static const int showsystray = 1;    /* 0 means no systray */
+static const int systrayonleft = 0;  /* 0 means right, >0 means left */
+static const int systrayspacing = 2; /* systray spacing */
+static const int systraypinning = 0; /* 0 means follow selected monitor */
 static const int systraypinningfailfirst =
     1; /* 1: pin systray to first monitor on fail */
 static const int user_bh = 0;
 static char font[] = "JetBrainsMono Nerd Font:size=14";
 static const char *fonts[] = {font, "monospace:size=12"};
 static char dmenufont[] = "monospace:size=12";
+static unsigned int baralpha = 0xd0;
+static unsigned int borderalpha = OPAQUE;
 static char normbgcolor[] = "#282828";
 static char normbordercolor[] = "#504945";
 static char normfgcolor[] = "#ebdbb2";
@@ -71,18 +75,12 @@ static const Layout layouts[] = {
     /* symbol     arrange function */
     {"[]=", tile}, /* first entry is default */
     {"><>", NULL}, /* no layout function means floating behavior */
-    {"[M]", monocle},
-    {"[@]", spiral},
-    {"[\\]", dwindle},
-    {"H[]", deck},
-    {"TTT", bstack},
-    {"===", bstackhoriz},
-    {"HHH", grid},
-    {"###", nrowgrid},
-    {"---", horizgrid},
-    {":::", gaplessgrid},
-    {"|M|", centeredmaster},
-    {">M>", centeredfloatingmaster},
+    {"[M]", monocle},        {"[@]", spiral},
+    {"[\\]", dwindle},       {"H[]", deck},
+    {"TTT", bstack},         {"===", bstackhoriz},
+    {"HHH", grid},           {"###", nrowgrid},
+    {"---", horizgrid},      {":::", gaplessgrid},
+    {"|M|", centeredmaster}, {">M>", centeredfloatingmaster},
 };
 
 /* key definitions */
